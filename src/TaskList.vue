@@ -36,8 +36,8 @@
           <label for="showcompleted" v-if="showCompleted">Showing completed</label> <label for="showcompleted" v-else>Hiding completed</label>  <input class="invisible" id="showcompleted" type="checkbox" v-model="showCompleted">
         </div>
         <div class="w-100 col-span-4">
-          <div v-for="(todo, index) in list">
-            <div class="grid grid-cols-4" v-show="!todo.done || showCompleted">
+          <div draggable="true" v-for="(todo, index) in list">
+            <div class="grid grid-cols-4 border m-2" v-show="!todo.done || showCompleted">
               <div class="col-span-2">
                 <input type="checkbox" v-model="todo.done"> 
               <span :class="{ done: todo.done }">{{ todo.text }}</span>

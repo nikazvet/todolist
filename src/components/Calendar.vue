@@ -7,6 +7,7 @@ import Day3 from './Day.vue'
 import Day4 from './Day.vue'
 import Day5 from './Day.vue'
 import Day6 from './Day.vue'
+import Day7 from './Day.vue'
     const dates = ref(["Day", "Monday 3", "Tuesday 4", "Wednesday 5", "Thursday 6", "Friday 7", "Saturday 8", "Saturday 9"])
     const startTime = ref(9);
     const endTime = ref(18)
@@ -25,7 +26,7 @@ import Day6 from './Day.vue'
         </div>
         <Day></Day>
         <Day1></Day1>
-        <Day2/>
+        <Day2></Day2>
         <Day3></Day3>
         <Day4></Day4>
         <Day5></Day5>
