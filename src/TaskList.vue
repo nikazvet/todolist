@@ -3,7 +3,9 @@
     import Modal from './Modal.vue'
 
     const selectedtask = ref({id: 0, text: "write down your task", done: true, notes: "add notes", date: new Date()})
-    const list = $ref([{id: 1, text: "do shopping", done: false, notes: "see list", date: new Date(2022, 10, 14)}, {id: 1, text: "do dishes", done: true, notes: "plates", date: new Date(2022, 10, 6)}]);
+    const list = $ref([]);
+    const listHome = $ref([{id: 1, text: "do shopping", done: false, notes: "see list", date: new Date(2022, 10, 14)}, {id: 1, text: "do dishes", done: true, notes: "plates", date: new Date(2022, 10, 6)}]);
+    const listUni = $ref([{id: 1, text: "update competence document", done: false, notes: "sprint retrospective and assignments", date: new Date(2022, 10, 14)}, {id: 2, text: "prepare for demo", done: false, notes: "", date: new Date(2022, 10, 6)}, {id: 3, text: "finish assignment", done: true, notes: "layout for vue website", date: new Date(2022, 10, 6)}]);
     const listName = "List Name"
     const showModal = $ref(false)
     const showCompleted = $ref(true)
@@ -29,9 +31,10 @@
     
     <template>
       <div class="w-96 grid grid-cols-4 gap-x-8 gap-y-1">
-        <div class="col-span-4 font-semibold text-lg"> 
-          {{listName}}
-        </div>
+        <select class="col-span-4" v-model="list">
+        <option :value="listHome">Home tasks</option>
+        <option :value="listUni">Uni tasks</option>
+        </select>
         <div class="col-span-4">
           <label for="showcompleted" v-if="showCompleted">Showing completed</label> <label for="showcompleted" v-else>Hiding completed</label>  <input class="invisible" id="showcompleted" type="checkbox" v-model="showCompleted">
         </div>
