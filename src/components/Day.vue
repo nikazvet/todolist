@@ -22,12 +22,12 @@
 <template>
     <div class="row-start">
         <div class="bg-yellow-100 row-span-1 w-full h-6 hover:bg-blue-100 border border-dotted border-slate-500" v-for="n in (endTime-startTime)/step+1">
-            <div v-on:dragover="AddSlot()" class="bg-blue-200 row-span-1 w-full h-full hover:bg-slate-100" v-if="timeslots.some(timeslot => timeslot.time === n/2+startTime-step)">
-                <button class="w-full h-full" @click="DeleteSlot(n/2-step+startTime)">
+            <div class="bg-blue-200 row-span-1 w-full h-full hover:bg-slate-100" v-if="timeslots.some(timeslot => timeslot.time === n/2+startTime-step)">
+                <button class="w-full h-full" @dragexit="DeleteSlot(n/2-step+startTime)" @click="DeleteSlot(n/2-step+startTime)">
                     Event
                 </button>
             </div>
-            <button class="w-full h-full" @click="AddSlot(n/2-step+startTime)" v-else></button>
+            <button class="w-full h-full" @dragexit="AddSlot(n/2-step+startTime)" @click="AddSlot(n/2-step+startTime)" v-else></button>
     </div>
     </div>
 

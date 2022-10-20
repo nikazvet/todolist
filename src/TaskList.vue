@@ -1,30 +1,30 @@
 <script setup>
     import { ref } from 'vue'
+    import { resetTracking } from '@vue/reactivity';
     import Modal from './Modal.vue'
 
     const selectedtask = ref({id: 0, text: "write down your task", done: true, notes: "add notes", date: new Date()})
     const list = $ref([]);
     const listHome = $ref([{id: 1, text: "do shopping", done: false, notes: "see list", date: new Date(2022, 10, 14)}, {id: 1, text: "do dishes", done: true, notes: "plates", date: new Date(2022, 10, 6)}]);
     const listUni = $ref([{id: 1, text: "update competence document", done: false, notes: "sprint retrospective and assignments", date: new Date(2022, 10, 14)}, {id: 2, text: "prepare for demo", done: false, notes: "", date: new Date(2022, 10, 6)}, {id: 3, text: "finish assignment", done: true, notes: "layout for vue website", date: new Date(2022, 10, 6)}]);
-    const listName = "List Name"
-    const showModal = $ref(false)
+    const showModal = ref(false)
     const showCompleted = $ref(true)
     
     function addtask(){
-      showModal=false; 
+      showModal.value =false; 
       var task = {text: selectedtask.value.text, done: false, notes: selectedtask.value.notes, id: 0, date: new Date(selectedtask.value.date)};
       task.id = (list.at(-1).id +1);
       list.push(task);
     }
     function openNewToDoWindow(task){
-      showModal = true;
+      showModal.value = true;
       selectedtask.value = task;
     }
     function deletetask(index){
       list.splice(index, 1)
     }
     function resetselectedtask(){
-      showModal = true;
+      showModal.value = true;
       selectedtask.value = {id: 0, text: 'write down your task', done: false, notes: 'add notes', date: new Date()};
     }
     </script>
