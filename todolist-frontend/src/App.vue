@@ -91,7 +91,7 @@
   <script setup>
   import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
   import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-  import TaskList from './TaskList.vue';
+  import TaskList from './components/TaskList.vue';
 import Calendar from './components/Calendar.vue';
   
   const user = {

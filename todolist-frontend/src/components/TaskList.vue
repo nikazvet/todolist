@@ -1,7 +1,7 @@
 <script setup>
     import { ref } from 'vue'
     import { resetTracking } from '@vue/reactivity';
-    import Modal from './Modal.vue'
+    import Modal from '../Modal.vue'
 
     const selectedtask = ref({id: 0, text: "write down your task", done: true, notes: "add notes", date: new Date()})
     const list = $ref([]);
