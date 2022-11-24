@@ -1,8 +1,8 @@
 import http from "../http-common";
 
-class TodoDataService {
+class TodoDataService{
   getAll() {
-    return http.get("/todos");
+    return http.get("/todos/all");
   }
 
   get(id) {
@@ -30,4 +30,4 @@ class TodoDataService {
   }
 }
 
-export default new TutorialDataService();
+export default new TodoDataService();

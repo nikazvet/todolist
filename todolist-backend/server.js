@@ -1,19 +1,20 @@
 const express = require("express");
 const cors = require("cors");
+var bodyParser = require('body-parser');
 
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:5173"
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
-// parse requests of content-type - application/json
-app.use(express.json());
+// parse application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }))
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+// parse application/json
+app.use(express.json())
 
 // simple route
 app.get("/", (req, res) => {
@@ -36,9 +37,9 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
-  db.sequelize.sync({ force: true }).then(() => {
+  /*db.sequelize.sync({ force: true }).then(() => {
     console.log("Drop and re-sync db.");
-  });
+  });*/
 
 
 

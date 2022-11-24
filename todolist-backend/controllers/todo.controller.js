@@ -1,46 +1,49 @@
 const db = require("../models");
-const Todo = db.todos;
+const TodoDB = db.todos;
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 // Create and Save a new Todo
 exports.create = (req, res) => {
+  console.log(req);
   // Validate request
-  if (!req.body.title) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
-  }
+  // if (!req.body) {
+  //   res.status(400).send({
+  //     message: "Content can not be empty!"
+  //   });
+  //   return;
+  // }
 
   // Create a Todo
   const todo = {
-    text: req.body.text,
-    notes: req.body.notes,
-    done: req.body.done,
-    date: req.body.date
+    text: req.body.task.text,
+    notes: req.body.task.notes,
+    done: req.body.task.done,
+    date: req.body.task.date
   };
 
+  res.send("todo");
+
   // Save Todo in the database
-  Todo.create(todo)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the to-do item."
-      });
-    });
+  // TodoDB.create(todo)
+  //   .then(data => {
+  //     res.send(data);
+  //   })
+  //   .catch(err => {
+  //     res.status(500).send({
+  //       message:
+  //         err.message || "Some error occurred while creating the to-do item."
+  //     });
+  //   });
 };
 
-// Retrieve all Tutorials from the database.
+// Retrieve all Todos from the database.
 exports.findAll = (req, res) => {
     const text = req.query.text;
     var condition = text ? { title: { [Op.like]: `%${text}%` } } : null;
   
-    Todo.findAll({ where: condition })
+    TodoDB.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })
@@ -56,7 +59,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Todo.findByPk(id)
+    TodoDB.findByPk(id)
       .then(data => {
         if (data) {
           res.send(data);
@@ -77,7 +80,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    Todo.update(req.body, {
+    TodoDB.update(req.body, {
       where: { id: id }
     })
       .then(num => {
@@ -102,7 +105,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Todo.destroy({
+    TodoDB.destroy({
       where: { id: id }
     })
       .then(num => {
@@ -125,7 +128,7 @@ exports.delete = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-  Todo.destroy({
+  TodoDB.destroy({
     where: {},
     truncate: false
   })
@@ -142,7 +145,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {
-    Todo.findAll({ where: { done: false } })
+    TodoDB.findAll({ where: { done: false } })
     .then(data => {
       res.send(data);
     })

@@ -4,7 +4,7 @@ module.exports = app =>{
 
     router.post("/", todos.create);
 
-    router.get("/", todos.findAll);
+    router.get("/all", todos.findAll);
 
     router.get("/tbd", todos.findAllPublished)
 

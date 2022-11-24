@@ -2,19 +2,32 @@
     import { ref } from 'vue'
     import { resetTracking } from '@vue/reactivity';
     import Modal from '../Modal.vue'
+    import axios from 'axios'
+    import TodoDataService from "../services/TodoDataService";
+    import {Todo} from '../../../class library/todoitem'
 
     const selectedtask = ref({id: 0, text: "write down your task", done: true, notes: "add notes", date: new Date()})
     const list = $ref([]);
-    const listHome = $ref([{id: 1, text: "do shopping", done: false, notes: "see list", date: new Date(2022, 10, 14)}, {id: 1, text: "do dishes", done: true, notes: "plates", date: new Date(2022, 10, 6)}]);
+    //const listExternal = $ref([{id: 1, text: "do shopping", done: false, notes: "see list", date: new Date(2022, 10, 14)}, {id: 1, text: "do dishes", done: true, notes: "plates", date: new Date(2022, 10, 6)}]);
+    const listExternal = $ref([]);
     const listUni = $ref([{id: 1, text: "update competence document", done: false, notes: "sprint retrospective and assignments", date: new Date(2022, 10, 14)}, {id: 2, text: "prepare for demo", done: false, notes: "", date: new Date(2022, 10, 6)}, {id: 3, text: "finish assignment", done: true, notes: "layout for vue website", date: new Date(2022, 10, 6)}]);
     const showModal = ref(false)
     const showCompleted = $ref(true)
     
     function addtask(){
       showModal.value =false; 
-      var task = {text: selectedtask.value.text, done: false, notes: selectedtask.value.notes, id: 0, date: new Date(selectedtask.value.date)};
-      task.id = (list.at(-1).id +1);
+      var task =  { text: selectedtask.value.text, notes: selectedtask.value.notes, done: false, date: new Date(selectedtask.value.date)};
       list.push(task);
+      var data = task.text
+
+      TodoDataService.create(data)
+        .then(response => {
+          task.id = response.data.id;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
     function openNewToDoWindow(task){
       showModal.value = true;
@@ -23,17 +36,40 @@
     function deletetask(index){
       list.splice(index, 1)
     }
+
+    function deletedbtask(task){
+      TodoDataService.delete(task.id).catch(e => {
+          console.log(e);
+        });
+    }
     function resetselectedtask(){
       showModal.value = true;
       selectedtask.value = {id: 0, text: 'write down your task', done: false, notes: 'add notes', date: new Date()};
     }
-    </script>
+
+    function retrieveTodos() {
+      TodoDataService.getAll()
+        .then(response => {
+          listExternal = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+
+    function updatetaskdb(todo){
+      TodoDataService.update(todo).catch(e => {
+          console.log(e);
+        });
+    }
+</script>
     
     <template>
       <div class="w-96 grid grid-cols-4 gap-x-8 gap-y-1">
-        <select class="col-span-4" v-model="list">
-        <option :value="listHome">Home tasks</option>
+        <select class="col-span-4" v-model="list" @change="retrieveTodos">
         <option :value="listUni">Uni tasks</option>
+        <option :value="listExternal">Db tasks</option>
         </select>
         <div class="col-span-4">
           <label for="showcompleted" v-if="showCompleted">Showing completed</label> <label for="showcompleted" v-else>Hiding completed</label>  <input class="invisible" id="showcompleted" type="checkbox" v-model="showCompleted">
@@ -45,7 +81,7 @@
                 <input type="checkbox" v-model="todo.done"> 
               <span :class="{ done: todo.done }">{{ todo.text }}</span>
               </div>
-              <button class="min-w-150 rounded-sm bg-red-200 hover:bg-red-300 shadow-sm hover:shadow-lg" @click="deletetask(index)">delete</button>
+              <button class="min-w-150 rounded-sm bg-red-200 hover:bg-red-300 shadow-sm hover:shadow-lg" @click="deletetask(index); deletedbtask(todo)">delete</button>
               <button class="rounded-sm bg-orange-200 hover:bg-orange-300 shadow-sm hover:shadow-lg" @click="openNewToDoWindow(todo)">
               edit
               </button>
@@ -53,7 +89,7 @@
                 <i>{{todo.notes}}</i>
               </div>
               <div class="col-span-4">
-                <i>{{todo.date.toDateString()}}</i>
+                <i>{{todo.date}}</i>
               </div>
             </div>
           </div>
@@ -76,7 +112,7 @@
                   <button class="w-full rounded-sm border-gray-500 hover:border-gray-400 border-2 bg-green-300 hover:bg-green-400" v-if="selectedtask.id===0" @click="addtask()">
                     Add new task
             </button>
-            <button class="border-gray-500 hover:border-gray-400 border-2 px-8 rounded-sm bg-orange-200 hover:bg-orange-300 w-full shadow-sm hover:shadow-lg" v-else @click="showModal=false; selectedtask.date = new Date(selectedtask.date)">
+            <button class="border-gray-500 hover:border-gray-400 border-2 px-8 rounded-sm bg-orange-200 hover:bg-orange-300 w-full shadow-sm hover:shadow-lg" v-else @click="showModal=false; selectedtask.date = new Date(selectedtask.date); updatetaskdb(selectedtask)">
                     Edit task
                   </button>
           </template>
