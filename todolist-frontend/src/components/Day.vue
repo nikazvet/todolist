@@ -28,7 +28,7 @@
                 </button>
             </div>
             <button class="w-full h-full" @dragexit="AddSlot(n/2-step+startTime)" @click="AddSlot(n/2-step+startTime)" v-else></button>
-    </div>
+        </div>
     </div>
 
 </template>

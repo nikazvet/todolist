@@ -1,6 +1,6 @@
 <script setup>
     import { ref } from 'vue'
-    import Day from './Day.vue'
+    import Day from '../Day.vue'
     const dates = ref(["Day", "Monday 3", "Tuesday 4", "Wednesday 5", "Thursday 6", "Friday 7", "Saturday 8", "Saturday 9"])
     const startTime = ref(9);
     const endTime = ref(18)

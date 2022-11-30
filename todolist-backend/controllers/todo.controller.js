@@ -6,36 +6,40 @@ const Op = Sequelize.Op;
 
 // Create and Save a new Todo
 exports.create = (req, res) => {
+  console.log(req.body);
+  console.log(req.params);
+  console.log("HHHH");
   console.log(req);
-  // Validate request
-  // if (!req.body) {
-  //   res.status(400).send({
-  //     message: "Content can not be empty!"
-  //   });
-  //   return;
-  // }
+  //Validate request
+  if (!req.body.task.text) {
+    res.status(400).send({
+      message: "Text can not be empty!"
+    });
+    return;
+  }
 
-  // Create a Todo
+  //Create a Todo
   const todo = {
     text: req.body.task.text,
     notes: req.body.task.notes,
     done: req.body.task.done,
     date: req.body.task.date
   };
+  console.log(req.body.task);
 
-  res.send("todo");
+  //res.send("todo");
 
   // Save Todo in the database
-  // TodoDB.create(todo)
-  //   .then(data => {
-  //     res.send(data);
-  //   })
-  //   .catch(err => {
-  //     res.status(500).send({
-  //       message:
-  //         err.message || "Some error occurred while creating the to-do item."
-  //     });
-  //   });
+  TodoDB.create(todo)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the to-do item."
+      });
+    });
 };
 
 // Retrieve all Todos from the database.
@@ -79,8 +83,10 @@ exports.findOne = (req, res) => {
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id;
+    console.log(id);
+    console.log(req.body);
 
-    TodoDB.update(req.body, {
+    TodoDB.update(req.body.task, {
       where: { id: id }
     })
       .then(num => {

@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
-import TaskList from "./components/TaskList.vue"
-import Calendar from "./components/Calendar.vue"
+import TaskList from "./components/Todo/TaskList.vue"
+import Calendar from "./components/Calendar/Calendar.vue"
 
 const routes =  [
   {

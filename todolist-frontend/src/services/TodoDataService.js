@@ -1,4 +1,5 @@
 import http from "../http-common";
+import axios from "axios";
 
 class TodoDataService{
   getAll() {
@@ -10,11 +11,11 @@ class TodoDataService{
   }
 
   create(data) {
-    return http.post("/todos", data);
+    return http.post("/todos/add", data, { headers: {"content-type": "application/json; charset=utf-8"}});
   }
 
-  update(id, data) {
-    return http.put(`/todos/${id}`, data);
+  update(id, datas) {
+    return http.put(`/todos/${id}`, datas);
   }
 
   delete(id) {

@@ -10,11 +10,16 @@ var corsOptions = {
 
 app.use(cors());
 
-// parse application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }))
+
 
 // parse application/json
-app.use(express.json())
+app.use(bodyParser.json())
+
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+
+//app.use(express.raw())
 
 // simple route
 app.get("/", (req, res) => {
