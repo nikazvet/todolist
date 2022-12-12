@@ -1,11 +1,12 @@
 <script setup>
+    import TodoDataService from '../../services/TodoDataService';
     const props = defineProps({
       task: Object,
     })
     const selectedtask = props.task;
         
     function addtask(){ 
-      var task =  { text: selectedtask.text, notes: selectedtask.notes, done: false, date: new Date(selectedtask.date)};
+      var task =  { text: selectedtask.text, notes: selectedtask.notes, done: false, date: new Date(selectedtask.date), list: 1, subtasks: []};
       var data = {task: task};
       var data = JSON.stringify(data);
       console.log("DATA:")
