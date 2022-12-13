@@ -104,10 +104,9 @@ const user = {
 const navigation = [
 
 
-  { name: 'Home', to: '/', current: true },
-  { name: 'Lists', to: '#', current: false },
-  { name: 'Calendar and Timeslots', to: '/calendar', current: false },
-  { name: 'Tags', to: '#', current: false },
+  { name: 'Focus', to: '/', current: true },
+  { name: 'Load', to: '#', current: false },
+  { name: 'Plan', to: '/calendar', current: false },
 ]
 const userNavigation = [
 

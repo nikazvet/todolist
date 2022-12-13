@@ -7,9 +7,9 @@ const Op = Sequelize.Op;
 // Create and Save a new Todo
 exports.create = (req, res) => {
   console.log(req.body);
-  console.log(req.params);
-  console.log("HHHH");
-  console.log(req);
+  // console.log(req.params);
+  // console.log("HHHH");
+  //console.log(req);
   //Validate request
   if (!req.body.task.text) {
     res.status(400).send({
@@ -26,8 +26,6 @@ exports.create = (req, res) => {
     date: req.body.task.date
   };
   console.log(req.body.task);
-
-  //res.send("todo");
 
   // Save Todo in the database
   TodoDB.create(todo)
@@ -86,7 +84,14 @@ exports.update = (req, res) => {
     console.log(id);
     console.log(req.body);
 
-    TodoDB.update(req.body.task, {
+    const todo = {
+      text: req.body.text,
+      notes: req.body.notes,
+      done: req.body.done,
+      date: req.body.date
+    };
+
+    TodoDB.update(todo, {
       where: { id: id }
     })
       .then(num => {

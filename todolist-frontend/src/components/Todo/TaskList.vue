@@ -53,7 +53,8 @@
     
     <template>
       <div class="w-96 grid grid-cols-4 gap-x-8 gap-y-1">
-        <select class="col-span-4" v-model="list" @change="retrieveTodos">
+        <div class="col-span-2">Focusing on your</div>
+        <select class="col-span-2" v-model="list" @change="retrieveTodos">
         <option :value="listUni">Uni tasks</option>
         <option :value="listExternal">Db tasks</option>
         </select>

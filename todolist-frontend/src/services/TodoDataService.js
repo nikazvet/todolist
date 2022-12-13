@@ -1,33 +1,32 @@
-import http from "../http-common";
-import axios from "axios";
+import axios from "../http-common";
 
 class TodoDataService{
   getAll() {
-    return http.get("/todos/all");
+    return axios.get("/todos/all");
   }
 
   get(id) {
-    return http.get(`/todos/${id}`);
+    return axios.get(`/todos/${id}`);
   }
 
   create(data) {
-    return http.post("/todos/add", data, { headers: {"content-type": "application/json; charset=utf-8"}});
+    return axios.post("/todos/add", data);
   }
 
   update(id, datas) {
-    return http.put(`/todos/${id}`, datas);
+    return axios.put(`/todos/${id}`, datas);
   }
 
   delete(id) {
-    return http.delete(`/todos/${id}`);
+    return axios.delete(`/todos/${id}`);
   }
 
   deleteAll() {
-    return http.delete(`/todos`);
+    return axios.delete(`/todos`);
   }
 
   findByText(text) {
-    return http.get(`/todos?text=${text}`);
+    return axios.get(`/todos?text=${text}`);
   }
 }
 

@@ -5,10 +5,11 @@ var bodyParser = require('body-parser');
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:5173"
+  origin: "*",
+  optionsSuccessStatus: 200
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 
@@ -17,7 +18,7 @@ app.use(bodyParser.json())
 
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+//app.use(bodyParser.urlencoded({ extended: true }))
 
 //app.use(express.raw())
 
