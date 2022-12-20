@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import TaskList from "./components/Todo/TaskList.vue"
 import Calendar from "./components/Calendar/Calendar.vue"
+import Load from "./components/Todo/Load.vue"
 
 const routes =  [
   {
@@ -15,6 +16,12 @@ const routes =  [
     name: "calendar",
     component: Calendar,
   },
+  {
+    path: "/load",
+    alias: "/load",
+    name: "load",
+    component: Load,
+  }
   /*{
     path: "/todo/:id",
     name: "tutorial-details",

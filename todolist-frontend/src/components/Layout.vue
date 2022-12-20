@@ -105,7 +105,7 @@ const navigation = [
 
 
   { name: 'Focus', to: '/', current: true },
-  { name: 'Load', to: '#', current: false },
+  { name: 'Load', to: '/load', current: false },
   { name: 'Plan', to: '/calendar', current: false },
 ]
 const userNavigation = [

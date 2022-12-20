@@ -9,7 +9,7 @@ class TodoDataService{
     return axios.get(`/todos/${id}`);
   }
 
-  create(data) {
+  async create(data) {
     return axios.post("/todos/add", data);
   }
 
@@ -23,6 +23,10 @@ class TodoDataService{
 
   deleteAll() {
     return axios.delete(`/todos`);
+  }
+
+  async link(data){
+    return axios.post("/todos/link", data)
   }
 
   findByText(text) {

@@ -10,6 +10,8 @@ module.exports = app =>{
 
     router.get("/:id", todos.findOne);
 
+    router.post("/link", todos.link)
+
   router.put("/:id", todos.update);
 
   router.delete("/:id", todos.delete);

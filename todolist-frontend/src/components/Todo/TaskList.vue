@@ -1,22 +1,17 @@
 <script setup>
     import { ref } from 'vue'
     import { resetTracking } from '@vue/reactivity';
-    import Modal from '../../Modal.vue'
     import TodoDataService from "../../services/TodoDataService";
     import AddTask from './AddTask.vue'
+    import ListDataService from "../../services/ListDataService"
 
-    const selectedtask = $ref({});
-    const list = $ref([]);
-    //const listExternal = $ref([{id: 1, text: "do shopping", done: false, notes: "see list", date: new Date(2022, 10, 14)}, {id: 1, text: "do dishes", done: true, notes: "plates", date: new Date(2022, 10, 6)}]);
-    const listExternal = $ref([]);
-    const listUni = $ref([{id: 1, text: "update competence document", done: false, notes: "sprint retrospective and assignments", date: new Date(2022, 10, 14)}, {id: 2, text: "prepare for demo", done: false, notes: "", date: new Date(2022, 10, 6)}, {id: 3, text: "finish assignment", done: true, notes: "layout for vue website", date: new Date(2022, 10, 6)}]);
-    const showCompleted = $ref(true)
-    const showModal = $ref(false);
-    const showTask = $ref(false);
-
-    function deletetask(index){
-      list.splice(index, 1)
-    }
+    var selectedtask = $ref({});
+    var list = $ref([]);
+    const lists = $ref([]);
+    const listid = $ref(0);
+    var showCompleted = $ref(true)
+    var showModal = $ref(false);
+    var showTask = $ref(false);
 
     function deletedbtask(task){
       TodoDataService.delete(task.id).catch(e => {
@@ -24,15 +19,39 @@
         });
     }
 
-    function retrieveTodos() {
-      TodoDataService.getAll()
-        .then(response => {
-          listExternal = response.data;
-          console.log(response.data);
+    function retrieveLists(){
+      ListDataService.getAll()
+      .then(response => {
+        lists = response.data
         })
-        .catch(e => {
+      .catch(e => {
           console.log(e);
         });
+    }
+
+    function updatetaskdb(todo){
+      todo.listId = list.id;
+      TodoDataService.update(todo.id, todo).catch(e => {
+          console.log(e);
+        });
+    }
+    retrieveLists();
+
+    function retrieveTodos(id) {
+      ListDataService.get(id)
+        .then(response => {
+          list = response.data;
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+    }
+
+    function Refresh(){
+      if(listid != null && listid > 0){
+        retrieveTodos(listid)
+      }
     }
 
     function AddOrEdit(todo){
@@ -48,32 +67,45 @@
 
     function close(){
       showTask = false;
+      Refresh();
     }
 </script>
     
     <template>
       <div class="w-96 grid grid-cols-4 gap-x-8 gap-y-1">
+
         <div class="col-span-2">Focusing on your</div>
-        <select class="col-span-2" v-model="list" @change="retrieveTodos">
-        <option :value="listUni">Uni tasks</option>
-        <option :value="listExternal">Db tasks</option>
+        <select class="col-span-2" v-model="listid" @change="retrieveTodos(listid)">
+          <option v-for="l in lists" :value="l.id">
+            {{ l.name }}
+          </option>
         </select>
+
+        <button @click="Refresh()">Refresh</button>
+
         <div class="col-span-4">
           <label for="showcompleted" v-if="showCompleted">Showing completed</label> <label for="showcompleted" v-else>Hiding completed</label>  <input class="invisible" id="showcompleted" type="checkbox" v-model="showCompleted">
         </div>
-        <div class="w-100 col-span-4">
-          <div draggable="true" v-for="(todo, index) in list" @click="AddOrEdit(todo)">
-            <div class="grid grid-cols-4 border m-2" v-show="!todo.done || showCompleted">
-              <div class="col-span-2">
-                <input type="checkbox" v-model="todo.done"> 
-              <span :class="{ done: todo.done }">{{ todo.text }}</span>
+
+        <div class="w-200 col-span-4">
+          <div v-if="list.todos != null && list.todos.length > 0" draggable="true" v-for="(todo) in list.todos">
+            <div :class="['grid grid-cols-9 border m-2 px-5']" v-show="!todo.done || showCompleted">
+              <input class="col-span-1 mr-4 border rounded-full" type="checkbox" v-model="todo.done" @change="updatetaskdb(todo)"> 
+              <span :class="[{ done: todo.done }, 'col-start-2 col-span-4']">{{ todo.text }}</span>
+
+              <div class="col-start-7 col-span-3 grid grid-cols-3 gap-x-2 gap-y-1">
+                <div :class="['col-span-3', list.pattern, list.bgcolor, list.maincolor]">
+                  <div :class="['text-black']">{{ list.name }}</div>
+                </div>
+                <button class="col-span-1 border-rounded-sm bg-red-200 hover:bg-red-300 shadow-sm hover:shadow-lg" @click="deletedbtask(todo), Refresh();"><img src="../../assets/delete_forever.svg" /></button>
+                <button :class="['col-span-1', 'bg-yellow-200']" @click="AddOrEdit(todo)">Edit</button>
+                <button :class="['col-span-1', 'bg-blue-200']">Open</button>
               </div>
-              <button class="start-col-4 -rounded-sm bg-red-200 hover:bg-red-300 shadow-sm hover:shadow-lg" @click="deletetask(index); deletedbtask(todo)"><img src="../../assets/delete_forever.svg" /></button>
-              <div class="col-span-4">
+              <div class="col-span-4 col-start-2">
                 <i>{{todo.notes}}</i>
               </div>
-              <div class="col-span-4">
-                <i>{{todo.date}}</i>
+              <div v-if="todo.date != null" class="bg-green-200 col-span-4 col-start-2">
+                <i>{{ (new Date(todo.date)).toDateString() }}</i>
               </div>
             </div>
           </div>
@@ -91,7 +123,7 @@
       <!-- </modal>
       </Teleport> -->
       </div>
-      <AddTask v-if="showTask" :task="selectedtask"  @close="close()"></AddTask>
+      <AddTask v-if="showTask" :task="selectedtask" :list="list"  @close="close(), Refresh()"></AddTask>
     </template>
     
     <style>

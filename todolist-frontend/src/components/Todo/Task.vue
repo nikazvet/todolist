@@ -7,7 +7,6 @@
         done: Boolean,
         list: Number,
         date: Date,
-        editing: Boolean,
     })
     const task = $ref(...props);
 </script>

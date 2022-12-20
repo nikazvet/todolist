@@ -18,9 +18,9 @@ app.use(bodyParser.json())
 
 
 // parse application/x-www-form-urlencoded
-//app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
-//app.use(express.raw())
+app.use(express.raw())
 
 // simple route
 app.get("/", (req, res) => {
@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 require("./routes/todo.routes")(app);
+require("./routes/list.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -43,9 +44,9 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
-  /*db.sequelize.sync({ force: true }).then(() => {
-    console.log("Drop and re-sync db.");
-  });*/
+  // db.sequelize.sync({ force: true }).then(() => {
+  //   console.log("Drop and re-sync db.");
+  // });
 
 
 
